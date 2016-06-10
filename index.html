@@ -1,0 +1,143 @@
+<!DOCTYPE html >
+<html >
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+        <title>Regex assistant</title>
+
+        <link href="css/regexpal.css" rel="stylesheet" type="text/css"/>
+        <link href="css/tabs.css" rel="stylesheet" type="text/css"/>
+        <link href="css/menu.css" rel="stylesheet" type="text/css"/>
+
+    </head>
+    <body>
+        <div id="options" class="hidden">
+            <input  id="flagG" type="checkbox"  checked="checked"/>
+            <input id="flagM" type="checkbox" />
+            <input  id="flagS" type="checkbox" />
+            <input  id="highlightSyntax" type="checkbox" checked="checked"/>
+            <input  id="invertMatches" type="checkbox"/>
+        </div>
+
+        <div id="wrapper">
+
+            <div id="tabContainer">
+
+                <styled style="color:#ffffff" > Regular expression</styled>
+                <div id="search"  class="smartField" >
+                    <textarea cols="100" rows="3" tabindex="1" spellcheck="false" style="resize:none;"></textarea>
+                </div>
+                <div style="height:20px">
+                </div>
+                <div id="divmenu" style="height:50px">
+                    <ul id="menu" >
+                        <li ><a>Add regular expression</a>
+                            <ul>
+                                <li><a href="#">Position</a>
+                                    <ul>
+                                        <li><label onclick="addChar('\\b')">Beginning word</label></li>
+                                        <li><label onclick="addChar('\\B')">Not beginning word</label></li>
+                                        <li><label onclick="addChar('^')">Beginning line</label></li>
+                                        <li><label onclick="addChar('$')">End line</label></li>
+                                    </ul>
+                                </li>
+
+                                <li><a href="#">Characters type</a>
+                                    <ul>
+                                        <li><label onclick="addChar('.')">Any charater</label></li>
+                                        <li><label onclick="addChar('[aeiou|AEIOU]')">Any vocal</label></li>
+                                        <li><label onclick="addChar('\\d')">Number</label></li>
+                                        <li><label onclick="addChar('\\D')">Not a number</label></li>
+                                        <li><label onclick="addChar('[^aeiou|^AEIOU]')">Any consonant</label></li>
+                                        <li><label onclick="addChar('[A-Z]')">Only Uppercase</label></li>
+                                        <li><label onclick="addChar('\\s')">Whitespaces</label></li>
+                                        <li><label onclick="addChar('\\S')">Not whitespaces</label></li>
+                                        <li><label onclick="addReplace1('Union of characters or expressions (separated by | )','x','(x)')">Union of characters</label></li>
+                                        <li><label onclick="addReplace1('Insert the special character ([\\^$.|?*+())','x','\\x')">Any special character</label></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Repeats</a>
+                                    <ul>
+                                        <li><label onclick="addChar('*')">Zero or more times</label></li>
+                                        <li><label onclick="addChar('+')">One or more times</label></li>
+                                        <li><label onclick="addChar('?')">Zero or once  only</label></li>
+                                        <li><label onclick="addReplace1('Insert the number or repeats','x','{x}')">X repeats</label></li>
+                                        <li><label onclick="addReplace2('Insert the begin of the range ','Now enter end of the range','x','y','{x,y}')">From X to Y repeats</label></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li ><a href="#">Examples</a>
+                            <ul>
+                                <li><a href="#">Currency</a>
+                                    <ul>
+                                        <li><label onclick="clearChar();addChar('(\\.|,)\\d+')">Decimal</label></li>
+                                        <li><label onclick="clearChar();addChar('(\\.|,)[5-9]\\d*')">Decimal more than 0.5</label></li>
+                                        <li><label onclick="clearChar();addChar('(\\.|,)\\d{3,}')">Decimal more than 2 digits</label></li>
+                                        <li><label onclick="clearChar();addChar('[$£ƒ¥€]')">Currency sign</label></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">IP address</a>
+                                    <ul>
+                                        <li><label onclick="clearChar();addChar('\\d')">Only numbers</label></li>
+                                        <li><label onclick="clearChar();addChar('\\.')">Only separators</label></li>
+                                        <li><label onclick="clearChar();addChar('(\\b((2(([0-4]\\d)|(5[0-5])))|(1\\d\\d)|(\\d\\d?)))(\\.((2(([0-4]\\d)|(5[0-5])))|(1\\d\\d)|(\\d\\d?))){3}')">Valid IP</label></li>
+                                        <li><label onclick="clearChar();addChar('127\\.0\\.0\\.1')">Localhost</label></li>
+                                        <li><label onclick="clearChar();addChar('192\\.168\\.1\\.(((2(([0-4]\\d)|(5[0-5])))|(1\\d\\d)|(\\d\\d?)))')">Local network (192.168.1.x)</label></li>
+                                        <li><label onclick="clearChar();addChar('(\\b((2(([0-4]\\d)|(5[0-5])))|(1\\d\\d)|(\\d\\d?)))(\\.((2(([0-4]\\d)|(5[0-5])))|(1\\d\\d)|(\\d\\d?))){2}.255')">Multicast</label></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Dates</a>
+                                    <ul>
+                                        <li><label onclick="clearChar();var today = new Date(); addChar(today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate())">Today</label></li>
+                                        <li><label onclick="clearChar();addChar('\\b((\\d{1,})(/|-)(0?\\d|0[0-2])(/|-)(0?\\d|[1-2]\\d|3[0-1]))\\D')">Valid date (yyyy/MM/dd)</label></li>
+                                        <li><label onclick="clearChar();addChar('\\b((0?\\d|[1-2]\\d|3[0-1])(/|-)(0?\\d|0[0-2])(/|-)(\\d{1,}))\\D')">Valid date (dd/MM/yyyy)</label></li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li style="width:150px;margin:5px;height:10px"><input id="flagI" type="checkbox" /><label style="color: #004294;" for="flagI">Case insensitive</label> </li>
+                        <li style="width:150px;margin:5px;height:10px" ><input id="highlightMatches" type="checkbox" checked="checked"/><label style="color: #004294;" for="highlightMatches">Highlight matches</label></li>
+                        <li ><a href="#">About</a>
+                            <ul>
+                                <li><a href="http://regexpal.com/">Regex</a></li>
+                                <li><a href="http://www.lawebera.es/">Tabs</a></li>
+                                <li><a href="http://www.my-html-codes.com/">Menu</a></li>
+
+                            </ul>
+                        </li>
+                    </ul> 
+                </div>
+                <div class="tabs">
+                    <ul>
+                        <li id="tabHeader_1">Examples</li>
+                        <li id="tabHeader_2">Pangram</li>
+                        <li id="tabHeader_3">Lorem Ipsum</li>
+                        <li id="tabHeader_4">Custom</li>
+                    </ul>
+                </div>
+                <div class="tabscontent">
+                    <div class="tabpage" id="tabpage_1">
+                        <div id="input" class="smartField">
+                            <textarea id="textarea"  cols="10" rows="10" style="resize:none;overflow:hidden" tabindex="2" spellcheck="false">
+                            </textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="scripts/xregexp.js"></script>
+        <script src="scripts/helpers.js"></script>
+        <script src="scripts/regexpal.js"></script>
+        <script src="scripts/tabs.js"></script>
+        <script src="scripts/texts.js"></script>
+        <script src="scripts/addRegExp.js"></script>
+
+    </body>
+</html>
